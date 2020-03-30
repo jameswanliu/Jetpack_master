@@ -6,6 +6,7 @@ import com.ddzh.downloader.di.qualifier.ApplicationContext
 import com.stephen.common.utils.scheduler.BaseSchedulers
 import com.stephen.common.utils.scheduler.BaseSchedulersImpl
 import com.stephen.common.application.BaseApplication
+import com.stephen.jetpack.application.DDApplication
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
@@ -19,10 +20,10 @@ abstract class AppModule {
 
     @Binds
     @ApplicationContext
-    abstract fun bindApplicationContext(application: BaseApplication): Context
+    abstract fun bindApplicationContext(application: DDApplication): Context
 
     @Binds
-    abstract fun bindApplication(application: BaseApplication): Application
+    abstract fun bindApplication(application: DDApplication): Application
 
     @Singleton
     @Binds

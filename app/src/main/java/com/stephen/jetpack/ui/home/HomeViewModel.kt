@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.stephen.common.BaseViewModel
+import javax.inject.Inject
 
-class HomeViewModel : BaseViewModel() {
+class HomeViewModel  @Inject constructor()  : BaseViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"

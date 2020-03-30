@@ -52,12 +52,13 @@ dependencies {
     //endregion
 
     // Dagger2
-    api deps.dagger.runtime
-    api deps.dagger.android
-    api deps.dagger.android_support
+    implementation deps.dagger.runtime
+    implementation deps.dagger.android
+    implementation deps.dagger.android_support
     kapt deps.dagger.compiler
     kapt deps.dagger.android_processor
 
+    api deps.lifecycle.extensions
 
     api 'com.github.bumptech.glide:glide:4.3.1'
     kapt 'com.github.bumptech.glide:compiler:4.3.1'

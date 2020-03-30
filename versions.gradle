@@ -41,8 +41,8 @@ room.rxjava2 = 'androidx.room:room-rxjava2:2.0.0'
 deps.room = room
 
 def lifecycle = [:]
-lifecycle.extensions = 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-lifecycle.compiler = 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+lifecycle.extensions = 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+lifecycle.compiler = 'androidx.lifecycle:lifecycle-compiler:2.2.0'
 deps.lifecycle = lifecycle
 
 def arch_core = [:]

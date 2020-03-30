@@ -3,6 +3,7 @@ package com.stephen.common.ui
 import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.stephen.common.BaseViewModel
 import javax.inject.Inject
 
@@ -18,9 +19,8 @@ abstract class BaseViewModelActivity<D:ViewDataBinding,ViewModel:BaseViewModel> 
     lateinit var viewModelFactory: ViewModelProvider.Factory
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewModel  = viewModelFactory.create(mViewModel::class.java).apply {
-            onStart()
-        }
+        mViewModel = ViewModelProviders.of(this,viewModelFactory).get(mViewModel::class.java)
+        mViewModel.onStart()
     }
 
 

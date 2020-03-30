@@ -7,9 +7,6 @@ import com.stephen.jetpack.di.module.activity.MainModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-/**
- * Created by cuongpm on 12/6/18.
- */
 
 @Module
 internal abstract class ActivityBindingModule {
