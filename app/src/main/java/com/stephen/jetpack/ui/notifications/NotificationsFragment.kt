@@ -8,31 +8,21 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.stephen.common.ui.BaseViewModelFragment
 import com.stephen.jetpack.R
+import com.stephen.jetpack.databinding.FragmentNotificationsBinding
 
-class NotificationsFragment : Fragment() {
-
-    private lateinit var notificationsViewModel: NotificationsViewModel
-
-
+class NotificationsFragment : BaseViewModelFragment<FragmentNotificationsBinding,NotificationsViewModel>() {
     companion object{
         fun newInstance():NotificationsFragment{
             return NotificationsFragment()
         }
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_notifications
+    }
+
+    override fun initData() {
     }
 }

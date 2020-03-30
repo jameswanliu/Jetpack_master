@@ -10,10 +10,8 @@ import javax.inject.Inject
  * create by stephen
  * on 2020/3/30
  */
-abstract class BaseViewModelActivity<D:ViewDataBinding,ViewModel:BaseViewModel> :BaseActivity<D>(){
-
+abstract class BaseViewModelFragment<D:ViewDataBinding,ViewModel:BaseViewModel>:BaseFragment<D>() {
     lateinit var mViewModel: ViewModel
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     override fun onCreate(savedInstanceState: Bundle?) {
