@@ -3,6 +3,7 @@ package com.stephen.jetpack.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ddzh.downloader.di.ViewModelKey
+import com.stephen.common.ui.BaseViewModel
 import com.stephen.common.utils.ViewModelFactory
 import com.stephen.jetpack.viewmodel.MainViewModel
 import dagger.Binds

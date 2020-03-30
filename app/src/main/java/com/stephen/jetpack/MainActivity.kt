@@ -4,7 +4,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.stephen.common.ui.BaseViewModelActivity
+import com.stephen.jetpack.base.BaseViewModelActivity
 import com.stephen.jetpack.databinding.ActivityMainBinding
 import com.stephen.jetpack.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*

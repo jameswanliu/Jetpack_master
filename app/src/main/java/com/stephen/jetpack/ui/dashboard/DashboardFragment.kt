@@ -1,18 +1,10 @@
 package com.stephen.jetpack.ui.dashboard
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.stephen.common.ui.BaseViewModelFragment
+import com.stephen.jetpack.base.BaseViewModelFragment
 import com.stephen.jetpack.R
 import com.stephen.jetpack.databinding.FragmentDashboardBinding
 
-class DashboardFragment : BaseViewModelFragment<FragmentDashboardBinding,DashboardViewModel>() {
+class DashboardFragment : BaseViewModelFragment<FragmentDashboardBinding, DashboardViewModel>() {
     companion object{
         fun newInstance():DashboardFragment{
             return DashboardFragment()

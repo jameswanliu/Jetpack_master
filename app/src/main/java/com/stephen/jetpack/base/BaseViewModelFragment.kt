@@ -1,16 +1,17 @@
-package com.stephen.common.ui
+package com.stephen.jetpack.base
 
 import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
-import com.stephen.common.BaseViewModel
+import com.stephen.common.ui.BaseFragment
+import com.stephen.common.ui.BaseViewModel
 import javax.inject.Inject
 
 /**
  * create by stephen
  * on 2020/3/30
  */
-abstract class BaseViewModelFragment<D:ViewDataBinding,ViewModel:BaseViewModel>:BaseFragment<D>() {
+abstract class BaseViewModelFragment<D:ViewDataBinding,ViewModel: BaseViewModel>: BaseFragment<D>() {
     lateinit var mViewModel: ViewModel
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory

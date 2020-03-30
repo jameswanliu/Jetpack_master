@@ -1,4 +1,4 @@
-package com.stephen.common
+package com.stephen.common.ui
 
 import androidx.lifecycle.ViewModel
 
