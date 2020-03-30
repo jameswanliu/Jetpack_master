@@ -1,0 +1,2 @@
+rootProject.name='Jetpack_master'
+include ':app','common'
