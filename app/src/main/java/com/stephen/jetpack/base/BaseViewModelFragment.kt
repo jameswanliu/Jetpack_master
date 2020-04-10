@@ -1,6 +1,7 @@
 package com.stephen.jetpack.base
 
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import com.stephen.common.ui.BaseFragment
@@ -15,13 +16,16 @@ abstract class BaseViewModelFragment<D:ViewDataBinding,ViewModel: BaseViewModel>
     lateinit var mViewModel: ViewModel
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewModel  = viewModelFactory.create(mViewModel::class.java).apply {
-            onStart()
-        }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mViewModel.onStart()
+    }
 
     override fun onDestroy() {
         super.onDestroy()

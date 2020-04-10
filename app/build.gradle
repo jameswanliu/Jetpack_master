@@ -64,7 +64,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     api project(path: ':common')
     kapt 'com.android.databinding:compiler:3.6.1'
-
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     // Life cycle
     kapt deps.lifecycle.compiler
     testImplementation deps.arch_core.testing
@@ -76,5 +76,17 @@ dependencies {
     implementation deps.dagger.android_support
     kapt deps.dagger.compiler
     kapt deps.dagger.android_processor
+
+    api "org.jetbrains.anko:anko-commons:$anko_version"
+    api "org.jetbrains.anko:anko-sdk15:$anko_version"
+    api "org.jetbrains.anko:anko-sdk15-listeners:$anko_version"
+
+    api "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
+    api "org.jetbrains.anko:anko-appcompat-v7-listeners:$anko_version"
+    implementation 'com.github.jdsjlzx:LRecyclerView:1.5.4.3'
+    implementation 'com.hjq:xxpermissions:6.0'
+    implementation 'com.hjq:toast:8.0'
+    api "org.jetbrains.anko:anko-sdk15-coroutines:$anko_version"
+
 
 }

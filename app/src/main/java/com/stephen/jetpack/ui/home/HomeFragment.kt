@@ -16,5 +16,6 @@ class HomeFragment : BaseViewModelFragment<FragmentHomeBinding, HomeViewModel>()
     }
 
     override fun initData() {
+        mViewModel  = viewModelFactory.create(HomeViewModel::class.java)
     }
 }
