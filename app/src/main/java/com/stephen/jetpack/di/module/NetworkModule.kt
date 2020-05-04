@@ -2,7 +2,7 @@ package com.stephen.jetpack.di.module
 
 import android.app.Application
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.stephen.jetpack.net.ConfigService
+import com.stephen.jetpack.net.ApiService
 import com.stephen.jetpack.utils.Memory
 import dagger.Module
 import dagger.Provides
@@ -20,15 +20,16 @@ import javax.inject.Singleton
 class NetworkModule {
 
     companion object {
-        private const val DATA_URL = "https://generaldata-79d9b.firebaseapp.com/youtube-dl/"
+        private const val TIME_OUT = 30L
+        private const val DATA_URL = "https://gank.io/api/"
     }
 
     private fun buildOkHttpClient(application: Application): OkHttpClient =
         OkHttpClient.Builder()
             .addNetworkInterceptor(StethoInterceptor())
-            .connectTimeout(10L, TimeUnit.SECONDS)
-            .writeTimeout(10L, TimeUnit.SECONDS)
-            .readTimeout(30L, TimeUnit.SECONDS)
+            .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .readTimeout(TIME_OUT, TimeUnit.SECONDS)
             .cache(
                 Cache(
                     File(application.cacheDir, "stephencache"),
@@ -43,11 +44,11 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideConfigService(okHttpClient: OkHttpClient): ConfigService = Retrofit.Builder()
+    fun provideConfigService(okHttpClient: OkHttpClient): ApiService = Retrofit.Builder()
         .baseUrl(DATA_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
-        .create(ConfigService::class.java)
+        .create(ApiService::class.java)
 }

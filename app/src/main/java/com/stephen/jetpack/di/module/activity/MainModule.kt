@@ -1,7 +1,7 @@
 package com.stephen.jetpack.di.module.activity
 
 import android.app.Activity
-import com.ddzh.downloader.di.ActivityScoped
+import com.stephen.jetpack.di.ActivityScoped
 import com.stephen.jetpack.MainActivity
 import com.stephen.jetpack.utils.fragment.FragmentFactory
 import com.stephen.jetpack.utils.fragment.FragmentFactoryImpl

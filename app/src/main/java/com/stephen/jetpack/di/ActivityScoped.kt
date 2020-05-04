@@ -1,4 +1,4 @@
-package com.ddzh.downloader.di
+package com.stephen.jetpack.di
 
 import javax.inject.Scope
 

@@ -1,7 +1,5 @@
 package com.stephen.jetpack.di.component
 
-import com.ddzh.downloader.di.module.*
-import com.stephen.common.application.BaseApplication
 import com.stephen.jetpack.application.DDApplication
 import com.stephen.jetpack.di.module.*
 import com.stephen.jetpack.di.module.ActivityBindingModule
@@ -15,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [AndroidSupportInjectionModule::class, AppModule::class, ActivityBindingModule::class, UtilModule::class,
-        DatabaseModule::class, NetworkModule::class, RepositoryModule::class, ViewModelModule::class]
+        DatabaseModule::class, NetworkModule::class, RepositoryModule::class,ViewModelModule::class]
 )
 interface AppComponent : AndroidInjector<DDApplication> {
 

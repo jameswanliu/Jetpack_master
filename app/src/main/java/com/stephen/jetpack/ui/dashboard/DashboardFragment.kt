@@ -1,11 +1,10 @@
 package com.stephen.jetpack.ui.dashboard
 
-import com.stephen.jetpack.base.BaseViewModelFragment
+import com.stephen.common.ui.BaseFragment
 import com.stephen.jetpack.R
 import com.stephen.jetpack.databinding.FragmentDashboardBinding
-import com.stephen.jetpack.ui.notifications.NotificationsViewModel
 
-class DashboardFragment : BaseViewModelFragment<FragmentDashboardBinding, DashboardViewModel>() {
+class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
     companion object{
         fun newInstance():DashboardFragment{
             return DashboardFragment()
@@ -17,7 +16,6 @@ class DashboardFragment : BaseViewModelFragment<FragmentDashboardBinding, Dashbo
     }
 
     override fun initData() {
-        mViewModel  = viewModelFactory.create(DashboardViewModel::class.java)
     }
 
 

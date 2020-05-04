@@ -1,4 +1,4 @@
-package com.ddzh.downloader.di.module
+package com.stephen.jetpack.di.module
 
 import android.app.Application
 import android.app.DownloadManager

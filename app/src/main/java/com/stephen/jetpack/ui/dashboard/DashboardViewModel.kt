@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.stephen.common.ui.BaseViewModel
 import javax.inject.Inject
 
-class DashboardViewModel  @Inject constructor()  : BaseViewModel() {
+class DashboardViewModel @Inject constructor() : BaseViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is dashboard Fragment"

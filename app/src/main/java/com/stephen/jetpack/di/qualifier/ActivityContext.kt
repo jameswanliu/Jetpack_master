@@ -1,4 +1,4 @@
-package com.ddzh.downloader.di.qualifier
+package com.stephen.jetpack.di.qualifier
 
 import javax.inject.Qualifier
 
