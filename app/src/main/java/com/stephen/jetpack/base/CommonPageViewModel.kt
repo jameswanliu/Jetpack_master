@@ -16,16 +16,19 @@ import io.reactivex.Observable
  */
 
 
-abstract class CommonPageViewModel<T>(val block: (Int) -> Observable<PagedList<T>>) : BaseViewModel() {
+abstract class CommonPageViewModel<T> : BaseViewModel() {
     abstract val adapter: CommonPageListAdapter<T, out ViewDataBinding>
     lateinit var liveDataPage: LiveData<PagedList<T>>
-    private val NUM_PER_PAGE = 15
-    private val PAGE_FIRST = 1
-    private var mPage = PAGE_FIRST
+    protected val NUM_PER_PAGE = 15
+    protected val PAGE_FIRST = 1
+    protected var mPage = PAGE_FIRST
 
     override fun onStart() {
 
     }
+
+
+    abstract fun getDataList():Observable<PagedList<T>>
 
 
     /**
@@ -38,6 +41,8 @@ abstract class CommonPageViewModel<T>(val block: (Int) -> Observable<PagedList<T
 
             override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<T>) {
                 val position = computeInitialLoadPosition(params, NUM_PER_PAGE)
+
+
             }
         }
 

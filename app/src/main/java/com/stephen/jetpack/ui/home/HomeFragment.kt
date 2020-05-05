@@ -8,7 +8,7 @@ import javax.inject.Inject
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     @Inject
-    private lateinit var homeViewModel: HomeViewModel
+    lateinit var homeViewModel: HomeViewModel
 
     companion object {
         fun newInstance(): HomeFragment {
