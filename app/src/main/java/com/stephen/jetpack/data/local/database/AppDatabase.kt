@@ -1,4 +1,4 @@
-package com.stephen.jetpack.data.database
+package com.stephen.jetpack.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

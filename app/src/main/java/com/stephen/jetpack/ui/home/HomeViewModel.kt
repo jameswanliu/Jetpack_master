@@ -4,25 +4,17 @@ import androidx.paging.PagedList
 import com.stephen.jetpack.adapter.SampleAdapter
 import com.stephen.jetpack.base.CommonPageViewModel
 import com.stephen.jetpack.bean.GirlBean
+import com.stephen.jetpack.bean.GirlResp
+import com.stephen.jetpack.data.repository.GirlRepository
 import io.reactivex.Observable
 import javax.inject.Inject
 
 
-
-
-class HomeViewModel @Inject constructor() : CommonPageViewModel<GirlBean>() {
-
+class HomeViewModel @Inject constructor(private val girlRepository: GirlRepository)
+    : CommonPageViewModel<GirlBean>() {
     override val adapter = SampleAdapter()
 
-    override fun onStart() {
-
+    override fun getDataList(position:Int): Observable<GirlResp> {
+        return girlRepository.getGirlDataList(position)
     }
-    override fun onStop() {
-
-    }
-
-    override fun getDataList(): Observable<PagedList<GirlBean>> {
-        return null!!
-    }
-
 }

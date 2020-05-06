@@ -26,7 +26,6 @@ abstract class ViewModelModule {
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
-
     @IntoMap
     @Binds
     @ViewModelKey(NotificationsViewModel::class)
@@ -37,14 +36,15 @@ abstract class ViewModelModule {
     @ViewModelKey(HomeViewModel::class)
     abstract fun bindHomeViewModel(model: HomeViewModel): ViewModel
 
-    @IntoMap
-    @Binds
-    @ViewModelKey(DashboardViewModel::class)
-    abstract fun bindDashboardViewModel(model: DashboardViewModel): ViewModel
 
     @IntoMap
     @Binds
     @ViewModelKey(MainViewModel::class)
     abstract fun bindMainViewModel(model: MainViewModel): ViewModel
+
+    @IntoMap
+    @Binds
+    @ViewModelKey(DashboardViewModel::class)
+    abstract fun bindDashboardViewModel(model: DashboardViewModel): ViewModel
 
 }

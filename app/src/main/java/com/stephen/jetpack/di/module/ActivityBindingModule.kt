@@ -12,10 +12,6 @@ import dagger.android.ContributesAndroidInjector
 internal abstract class ActivityBindingModule {
 
     @ActivityScoped
-    @ContributesAndroidInjector
-    internal abstract fun bindSplashActivity(): SplashActivity
-
-    @ActivityScoped
     @ContributesAndroidInjector(modules = [MainModule::class])
     internal abstract fun bindMainActivity(): MainActivity
 

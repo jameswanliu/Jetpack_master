@@ -1,6 +1,7 @@
 package com.stephen.jetpack.base.paging
 
 import androidx.paging.DataSource
+import androidx.paging.PageKeyedDataSource
 import androidx.paging.PositionalDataSource
 
 
@@ -10,6 +11,6 @@ import androidx.paging.PositionalDataSource
  */
 
 
-class PageDateSourceFactory<T>(private val positionalDataSource: PositionalDataSource<T>) : DataSource.Factory<Int,T>(){
+class PageDateSourceFactory<T>(private val positionalDataSource: PageKeyedDataSource<Int,T>) : DataSource.Factory<Int,T>(){
     override fun create(): DataSource<Int, T> = positionalDataSource
 }

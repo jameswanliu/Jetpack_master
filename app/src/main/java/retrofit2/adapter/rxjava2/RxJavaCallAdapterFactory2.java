@@ -63,91 +63,109 @@ import retrofit2.Retrofit;
  * stable by RxJava.
  */
 public final class RxJavaCallAdapterFactory2 extends CallAdapter.Factory {
-  /**
-   * Returns an instance which creates synchronous observables that do not operate on any scheduler
-   * by default.
-   */
-  public static RxJavaCallAdapterFactory2 create() {
-    return new RxJavaCallAdapterFactory2(null, false);
-  }
+    /**
+     * Returns an instance which creates synchronous observables that do not operate on any scheduler
+     * by default.
+     */
 
-  /**
-   * Returns an instance which creates asynchronous observables. Applying
-   * {@link Observable#subscribeOn} has no effect on stream types created by this factory.
-   */
-  public static RxJavaCallAdapterFactory2 createAsync() {
-    return new RxJavaCallAdapterFactory2(null, true);
-  }
+    private @androidx.annotation.Nullable
+    Scheduler schedulerSubscribeOn;
+    private @androidx.annotation.Nullable
+    Scheduler schedulerObserveOn;
 
-  /**
-   * Returns an instance which creates synchronous observables that
-   * {@linkplain Observable#subscribeOn(Scheduler) subscribe on} {@code scheduler} by default.
-   */
-  @SuppressWarnings("ConstantConditions") // Guarding public API nullability.
-  public static RxJavaCallAdapterFactory2 createWithScheduler(Scheduler scheduler) {
-    if (scheduler == null) throw new NullPointerException("scheduler == null");
-    return new RxJavaCallAdapterFactory2(scheduler, false);
-  }
-
-  private final @javax.annotation.Nullable
-  Scheduler scheduler;
-  private final boolean isAsync;
-
-  private RxJavaCallAdapterFactory2(@Nullable Scheduler scheduler, boolean isAsync) {
-    this.scheduler = scheduler;
-    this.isAsync = isAsync;
-  }
-
-  @Override
-  public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
-    Class<?> rawType = getRawType(returnType);
-
-    if (rawType == Completable.class) {
-      // Completable is not parameterized (which is what the rest of this method deals with) so it
-      // can only be created with a single configuration.
-      return new RxJava2CallAdapter(Void.class, scheduler, isAsync, false, true, false, false,
-              false, true);
+    public static RxJavaCallAdapterFactory2 create() {
+        return new RxJavaCallAdapterFactory2(null, false);
     }
 
-    boolean isFlowable = rawType == Flowable.class;
-    boolean isSingle = rawType == Single.class;
-    boolean isMaybe = rawType == Maybe.class;
-    if (rawType != Observable.class && !isFlowable && !isSingle && !isMaybe) {
-      return null;
+
+    public static RxJavaCallAdapterFactory2 create(@androidx.annotation.Nullable Scheduler schedulerSubscribeOn,
+                                                   @androidx.annotation.Nullable Scheduler schedulerObserveOn) {
+        return new RxJavaCallAdapterFactory2(schedulerSubscribeOn, schedulerObserveOn, false);
     }
 
-    boolean isResult = false;
-    boolean isBody = false;
-    Type responseType;
-    if (!(returnType instanceof ParameterizedType)) {
-      String name = isFlowable ? "Flowable"
-              : isSingle ? "Single"
-              : isMaybe ? "Maybe" : "Observable";
-      throw new IllegalStateException(name + " return type must be parameterized"
-              + " as " + name + "<Foo> or " + name + "<? extends Foo>");
+    /**
+     * Returns an instance which creates asynchronous observables. Applying
+     * {@link Observable#subscribeOn} has no effect on stream types created by this factory.
+     */
+    public static RxJavaCallAdapterFactory2 createAsync() {
+        return new RxJavaCallAdapterFactory2(null, true);
     }
 
-    Type observableType = getParameterUpperBound(0, (ParameterizedType) returnType);
-    Class<?> rawObservableType = getRawType(observableType);
-    if (rawObservableType == Response.class) {
-      if (!(observableType instanceof ParameterizedType)) {
-        throw new IllegalStateException("Response must be parameterized"
-                + " as Response<Foo> or Response<? extends Foo>");
-      }
-      responseType = getParameterUpperBound(0, (ParameterizedType) observableType);
-    } else if (rawObservableType == retrofit2.adapter.rxjava2.Result.class) {
-      if (!(observableType instanceof ParameterizedType)) {
-        throw new IllegalStateException("Result must be parameterized"
-                + " as Result<Foo> or Result<? extends Foo>");
-      }
-      responseType = getParameterUpperBound(0, (ParameterizedType) observableType);
-      isResult = true;
-    } else {
-      responseType = observableType;
-      isBody = true;
+    /**
+     * Returns an instance which creates synchronous observables that
+     * {@linkplain Observable#subscribeOn(Scheduler) subscribe on} {@code scheduler} by default.
+     */
+    @SuppressWarnings("ConstantConditions") // Guarding public API nullability.
+    public static RxJavaCallAdapterFactory2 createWithScheduler(Scheduler scheduler) {
+        if (scheduler == null) throw new NullPointerException("scheduler == null");
+        return new RxJavaCallAdapterFactory2(scheduler, false);
     }
 
-    return new RxJava2CallAdapter(responseType, scheduler, isAsync, isResult, isBody, isFlowable,
-            isSingle, isMaybe, false);
-  }
+    private final boolean isAsync;
+
+    private RxJavaCallAdapterFactory2(@Nullable Scheduler scheduler, boolean isAsync) {
+        this.schedulerSubscribeOn = scheduler;
+        this.isAsync = isAsync;
+    }
+
+    private RxJavaCallAdapterFactory2(@androidx.annotation.Nullable Scheduler schedulerSubscribeOn,
+                                      @androidx.annotation.Nullable Scheduler schedulerObserveOn, boolean isAsync) {
+        this.schedulerSubscribeOn = schedulerSubscribeOn;
+        this.schedulerObserveOn = schedulerObserveOn;
+        this.isAsync = isAsync;
+    }
+
+
+    @Override
+    public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
+        Class<?> rawType = getRawType(returnType);
+
+        if (rawType == Completable.class) {
+            // Completable is not parameterized (which is what the rest of this method deals with) so it
+            // can only be created with a single configuration.
+            return new RxJavaCallAdapter2(Void.class, schedulerSubscribeOn, isAsync, false, true, false, false,
+                    false, true);
+        }
+
+        boolean isFlowable = rawType == Flowable.class;
+        boolean isSingle = rawType == Single.class;
+        boolean isMaybe = rawType == Maybe.class;
+        if (rawType != Observable.class && !isFlowable && !isSingle && !isMaybe) {
+            return null;
+        }
+
+        boolean isResult = false;
+        boolean isBody = false;
+        Type responseType;
+        if (!(returnType instanceof ParameterizedType)) {
+            String name = isFlowable ? "Flowable"
+                    : isSingle ? "Single"
+                    : isMaybe ? "Maybe" : "Observable";
+            throw new IllegalStateException(name + " return type must be parameterized"
+                    + " as " + name + "<Foo> or " + name + "<? extends Foo>");
+        }
+
+        Type observableType = getParameterUpperBound(0, (ParameterizedType) returnType);
+        Class<?> rawObservableType = getRawType(observableType);
+        if (rawObservableType == Response.class) {
+            if (!(observableType instanceof ParameterizedType)) {
+                throw new IllegalStateException("Response must be parameterized"
+                        + " as Response<Foo> or Response<? extends Foo>");
+            }
+            responseType = getParameterUpperBound(0, (ParameterizedType) observableType);
+        } else if (rawObservableType == retrofit2.adapter.rxjava2.Result.class) {
+            if (!(observableType instanceof ParameterizedType)) {
+                throw new IllegalStateException("Result must be parameterized"
+                        + " as Result<Foo> or Result<? extends Foo>");
+            }
+            responseType = getParameterUpperBound(0, (ParameterizedType) observableType);
+            isResult = true;
+        } else {
+            responseType = observableType;
+            isBody = true;
+        }
+
+        return new RxJavaCallAdapter2(responseType, schedulerSubscribeOn, isAsync, isResult, isBody, isFlowable,
+                isSingle, isMaybe, false);
+    }
 }

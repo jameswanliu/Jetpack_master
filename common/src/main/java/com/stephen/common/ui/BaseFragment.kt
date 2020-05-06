@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import dagger.android.support.DaggerFragment
 
 
 /**
  * create by stephen
  *  on 2020/3/30
  */
-abstract class BaseFragment<V : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<V : ViewDataBinding> : DaggerFragment() {
 
     lateinit var mBinding: V
 
