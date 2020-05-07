@@ -1,6 +1,5 @@
 package com.stephen.jetpack.adapter
 
-import android.content.Context
 import androidx.recyclerview.widget.DiffUtil
 import com.stephen.jetpack.R
 import com.stephen.jetpack.bean.GirlBean

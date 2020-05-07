@@ -1,11 +1,11 @@
 package com.stephen.jetpack.data.remote
 
+import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
+import com.stephen.common.bean.BaseResp
 import com.stephen.jetpack.bean.GirlBean
-import com.stephen.jetpack.bean.GirlResp
 import com.stephen.jetpack.data.repository.GirlRepository
 import com.stephen.jetpack.net.ApiService
-import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GirlRemoteDataSource @Inject constructor(private val apiService: ApiService) : GirlRepository {
-    override fun getGirlDataList(position: Int): Observable<GirlResp> =
+    override fun getGirlDataList(position: Int): LiveData<BaseResp<PagedList<GirlBean>>> =
         apiService.getGirlsList(position)
 
 }

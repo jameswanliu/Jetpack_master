@@ -2,14 +2,14 @@ package com.stephen.jetpack.base
 
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
-import androidx.paging.LivePagedListBuilder
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
-import androidx.paging.PositionalDataSource
+import com.stephen.common.bean.BaseResp
 import com.stephen.common.ui.BaseViewModel
 import com.stephen.jetpack.adapter.CommonPageListAdapter
-import com.stephen.jetpack.base.paging.PageDateSourceFactory
-import io.reactivex.Observable
+import com.stephen.jetpack.bean.GirlBean
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -20,56 +20,39 @@ import io.reactivex.disposables.CompositeDisposable
 
 abstract class CommonPageViewModel<T> : BaseViewModel() {
     abstract val adapter: CommonPageListAdapter<T, out ViewDataBinding>
-    private lateinit var compositeDisposable: CompositeDisposable
-    lateinit var liveDataPage: LiveData<PagedList<T>>
-    protected val NUM_PER_PAGE = 15
-    protected val PAGE_FIRST = 1
+
+    private val refreshing = MutableLiveData<Boolean>()
+    protected val refresh = MutableLiveData<Boolean>()
+    private val loading = MutableLiveData<Boolean>()
+    private val hasmore = MutableLiveData<Boolean>()
+    private val page = MutableLiveData(1)
+
+    private val baseRespList:LiveData<BaseResp<PagedList<T>>> = Transformations.switchMap(page) {
+        getDataList(it)
+    }
+
+
+    var liveDataPage:LiveData<PagedList<T>> = Transformations.map(baseRespList) {
+        refreshing.value = false
+        loading.value = false
+        it.data
+    }
 
     override fun onStart() {
-        compositeDisposable = CompositeDisposable()
-        initPagedList()
     }
 
     override fun onStop() {
-        compositeDisposable.clear()
     }
 
-    abstract fun getDataList(position: Int): Observable<T>
+    abstract fun getDataList(position: Int): LiveData<BaseResp<PagedList<T>>>
 
-
-    private fun callDataList(
-        position: Int,
-        callback: PageKeyedDataSource.LoadCallback<Int, T>?,
-        initCallback: PageKeyedDataSource.LoadInitialCallback<Int, T>?
-    ) {
-        getDataList(position).doOnSubscribe {compositeDisposable.add(it)}
+    fun refresh() {
+        page.value = 0
+        refreshing.value = true
     }
 
-    /**
-     * 初始化PageList
-     */
-    private fun initPagedList() {
-        val pageKeyedDataSource = object : PageKeyedDataSource<Int, T>() {
-            override fun loadInitial(
-                params: LoadInitialParams<Int>,
-                callback: LoadInitialCallback<Int, T>
-            ) = callDataList(PAGE_FIRST, null, callback)
-
-            override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, T>) =
-                callDataList(params.key, callback, null)
-
-            override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, T>) {
-            }
-        }
-        liveDataPage = LivePagedListBuilder<Int, T>(
-            PageDateSourceFactory(pageKeyedDataSource),
-            PagedList.Config.Builder().setPageSize(NUM_PER_PAGE)//每次加载的数据数量15
-                .setPrefetchDistance(NUM_PER_PAGE)//15
-                .setEnablePlaceholders(false).setInitialLoadSizeHint(NUM_PER_PAGE)//15
-                .build()
-        ).build()
-
-
+    fun loadMore() {
+        page.value = +1
+        loading.value = true
     }
-
 }

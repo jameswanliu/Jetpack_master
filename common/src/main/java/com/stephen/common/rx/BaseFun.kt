@@ -9,10 +9,10 @@ import io.reactivex.functions.Function
 
 class BaseFun<T> : Function<BaseResp<T>, Observable<T>> {
     override fun apply(t: BaseResp<T>): Observable<T> {
-        (t.code == 10000).yes {
+        (t.status == 100).yes {
             return Observable.just(t.data)
         }.otherwise {
-            return Observable.error(BaseException(t.code, t.msg))
+            return Observable.error(BaseException(t.status, ""))
         }
     }
 
