@@ -5,12 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
 import com.stephen.jetpack.net.status.NetworkStatus
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Action
 
 /**
  * create by stephen
  * on 2020/5/9
  */
-class ListDataSource <T>(val remoteData:(page:Int)->LiveData<PagedList<T>>
+class ListDataSource <T>(var remoteData:(page:Int)-> Observable<List<T>>,private val compositeDisposable: CompositeDisposable
 ): PageKeyedDataSource<Int, T>() {
     val networkState = MutableLiveData<NetworkStatus>()
     val initialLoad = MutableLiveData<NetworkStatus>()
@@ -22,11 +25,24 @@ class ListDataSource <T>(val remoteData:(page:Int)->LiveData<PagedList<T>>
         networkState.postValue(NetworkStatus.LOADING)
         initialLoad.postValue(NetworkStatus.LOADING)
                     setRetry(null)
-        remoteData.invoke(1).observe()
-                    networkState.postValue(NetworkStatus.LOADED)
-                    initialLoad.postValue(NetworkStatus.LOADED)
-                    callback.onResult(remoteData., null, 2)
-                    newDataArrive.postCall()
+        compositeDisposable.add(remoteData.invoke(1).subscribe ({
+                    items ->
+                // clear retry since last request succeeded
+                setRetry(null)
+                networkState.postValue(NetworkStatus.LOADED)
+                initialLoad.postValue(NetworkStatus.LOADED)
+                callback.onResult(items, null, 2)
+                newDataArrive.postCall()
+            },{
+                    throwable ->
+                newDataArrive.postCall()
+                // keep a Completable for future retry
+                setRetry(Action { loadInitial(params, callback) })
+                val error = NetworkStatus.error(throwable)
+                // publish the error
+                networkState.postValue(error)
+                initialLoad.postValue(error)
+            }))
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, T>) {
