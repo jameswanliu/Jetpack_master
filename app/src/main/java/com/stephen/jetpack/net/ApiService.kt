@@ -3,8 +3,6 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import com.stephen.common.bean.BaseResp
 import com.stephen.jetpack.bean.GirlBean
-import com.stephen.jetpack.bean.GirlResp
-import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
 

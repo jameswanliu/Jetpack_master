@@ -12,7 +12,6 @@ import com.stephen.jetpack.databinding.LayoutSampleBinding
 
 class SampleAdapter : CommonPageListAdapter
 <GirlBean, LayoutSampleBinding>(R.layout.layout_sample, callback) {
-
     companion object {
         val callback = object : DiffUtil.ItemCallback<GirlBean>() {
             override fun areItemsTheSame(oldItem: GirlBean, newItem: GirlBean): Boolean =

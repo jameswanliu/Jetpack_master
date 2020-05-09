@@ -4,13 +4,10 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
 import com.stephen.common.bean.BaseResp
 import com.stephen.common.ui.BaseViewModel
 import com.stephen.jetpack.adapter.CommonPageListAdapter
-import com.stephen.jetpack.bean.GirlBean
-import io.reactivex.disposables.CompositeDisposable
 
 /**
  * create by stephen
@@ -27,12 +24,12 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
     private val hasmore = MutableLiveData<Boolean>()
     private val page = MutableLiveData(1)
 
-    private val baseRespList:LiveData<BaseResp<PagedList<T>>> = Transformations.switchMap(page) {
+    private val baseRespList = Transformations.switchMap(page) {
         getDataList(it)
     }
 
 
-    var liveDataPage:LiveData<PagedList<T>> = Transformations.map(baseRespList) {
+    var liveDataPage= Transformations.map(baseRespList) {
         refreshing.value = false
         loading.value = false
         it.data
