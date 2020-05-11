@@ -1,10 +1,9 @@
 package com.stephen.jetpack.data.compat
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import androidx.paging.PagedList
 import com.stephen.jetpack.net.status.NetworkStatus
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
@@ -13,7 +12,8 @@ import io.reactivex.functions.Action
  * create by stephen
  * on 2020/5/9
  */
-class ListDataSource <T>(var remoteData:(page:Int)-> Observable<List<T>>,private val compositeDisposable: CompositeDisposable
+class ListDataSource <T>(var remoteData:(page:Int)-> Observable<List<T>>,
+                         private val compositeDisposable: CompositeDisposable
 ): PageKeyedDataSource<Int, T>() {
     val networkState = MutableLiveData<NetworkStatus>()
     val initialLoad = MutableLiveData<NetworkStatus>()
@@ -60,26 +60,24 @@ class ListDataSource <T>(var remoteData:(page:Int)-> Observable<List<T>>,private
             // keep a Completable for future retry
             setRetry(Action { loadAfter(params, callback) })
             // publish the error
-            networkState.postValue(NetworkState.error(throwable))
+            networkState.postValue(NetworkStatus.error(throwable))
         }))
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, T>) {
         // set network value to loading.
-        networkState.postValue(NetworkState.LOADING)
+        networkState.postValue(NetworkStatus.LOADING)
 
         //get the users from the api after id
         compositeDisposable.add(remoteData.invoke(params.key).subscribe({ items ->
             // clear retry since last request succeeded
             setRetry(null)
-            networkState.postValue(NetworkState.LOADED)
+            networkState.postValue(NetworkStatus.LOADED)
             callback.onResult(items, params.key-1)
             newDataArrive.postCall()
         }, { throwable ->
-            // keep a Completable for future retry
             setRetry(Action { loadAfter(params, callback) })
-            // publish the error
-            networkState.postValue(NetworkState.error(throwable))
+            networkState.postValue(NetworkStatus.error(throwable))
         }))
     }
 
@@ -91,9 +89,11 @@ class ListDataSource <T>(var remoteData:(page:Int)-> Observable<List<T>>,private
     fun retry() {
         if (retryCompletable != null) {
             compositeDisposable.add(retryCompletable!!
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ }, { throwable -> Log.e("ListDataSource",throwable.message) }))
+                .subscribe({ }, { throwable ->
+                    {
+
+                    }
+                }))
         }
     }
 
