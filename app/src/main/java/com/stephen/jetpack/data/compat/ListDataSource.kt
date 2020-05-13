@@ -50,7 +50,7 @@ class ListDataSource <T>(var remoteData:(page:Int)-> Observable<List<T>>,
         networkState.postValue(NetworkStatus.LOADING)
 
         //get the users from the api after id
-        compositeDisposable.add(NetworkStatus.invoke(params.key).subscribe({ items ->
+        compositeDisposable.add(remoteData.invoke(params.key).subscribe({ items ->
             // clear retry since last request succeeded
             setRetry(null)
             networkState.postValue(NetworkStatus.LOADED)
