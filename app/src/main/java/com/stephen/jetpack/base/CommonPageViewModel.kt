@@ -37,8 +37,9 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
 
     private val config = PagedList.Config.Builder()
         .setPageSize(10)
-        .setInitialLoadSizeHint(20)
+        .setInitialLoadSizeHint(10)
         .setEnablePlaceholders(false)
+        .setPrefetchDistance(-1)
         .build()
 
 
