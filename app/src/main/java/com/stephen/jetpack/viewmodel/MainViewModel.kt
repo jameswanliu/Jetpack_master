@@ -17,5 +17,4 @@ class MainViewModel @Inject constructor() :BaseViewModel(){
 
     override fun onStop() {
     }
-
 }

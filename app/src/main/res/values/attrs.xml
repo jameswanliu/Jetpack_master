@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TitleBarView">
+        <attr name="bar_title" format="string" />
+        <attr name="back_menu_hide" format="boolean" />
+        <attr name="title_color" format="color" />
+        <attr name="right_menu_hide" format="boolean" />
+        <attr name="menu_icon" format="reference" />
+        <attr name="hide_close_button" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CleanAppCompatEditText">
+        <attr name="hide_icon" format="boolean" />
+    </declare-styleable>
+
+
+</resources>
