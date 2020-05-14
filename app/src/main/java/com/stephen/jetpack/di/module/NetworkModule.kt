@@ -7,10 +7,13 @@ import com.stephen.jetpack.net.adapter.LiveDataCallAdapterFactory
 import com.stephen.jetpack.utils.Memory
 import dagger.Module
 import dagger.Provides
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJavaCallAdapterFactory2
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -50,7 +53,7 @@ class NetworkModule {
         .baseUrl(DATA_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
+        .addCallAdapterFactory(RxJavaCallAdapterFactory2.create(Schedulers.io(),AndroidSchedulers.mainThread()))
         .build()
         .create(ApiService::class.java)
 }

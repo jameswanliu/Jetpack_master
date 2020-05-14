@@ -1,6 +1,5 @@
 package com.stephen.jetpack.ui.home
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.stephen.common.ui.BaseFragment
@@ -29,9 +28,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         homeViewModel.onStart()
         mBinding.radapter = homeViewModel.adapter
-        homeViewModel.liveDataPage.observe(this, Observer {
-            homeViewModel.adapter.submitList(it)
-        })
     }
 
 
