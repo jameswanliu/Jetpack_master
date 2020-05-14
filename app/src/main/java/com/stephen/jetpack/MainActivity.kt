@@ -8,7 +8,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.stephen.common.ui.BaseActivity
 import com.stephen.jetpack.databinding.ActivityMainBinding
-import com.stephen.jetpack.ui.home.HomeViewModel
 import com.stephen.jetpack.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
