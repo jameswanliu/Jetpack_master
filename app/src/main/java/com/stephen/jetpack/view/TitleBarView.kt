@@ -106,9 +106,6 @@ class TitleBarView : _RelativeLayout {
     }
 
 
-    fun setTitile(text: String) {
-        textView.text = text
-    }
 
     fun rightMenuOnclick(block: () -> Unit) {
         rigthView?.onClick {
