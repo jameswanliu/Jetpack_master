@@ -52,17 +52,13 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
     }
 
 
-    val refresh = {
-        firstTime = false
-        refresh()
-    }
 
-    private fun refresh(){
+    fun refresh() {
+        firstTime = false
         listDataSourceFactory.listMutableList.value!!.invalidate()
     }
 
     fun retry() = listDataSourceFactory.listMutableList.value!!.retry()
-
 
     fun loadEnd() {
         Transformations.switchMap(listDataSourceFactory.listMutableList) {
@@ -113,9 +109,7 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
     }
 
 
-    override fun onStart() {
-        loadData()
-    }
+    override fun onStart() = loadData()
 
     override fun onStop() {
     }

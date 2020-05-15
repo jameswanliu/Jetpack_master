@@ -9,7 +9,7 @@
             type="com.stephen.jetpack.adapter.SampleAdapter" />
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.stephen.jetpack.ui.home.HomeViewModel" />
     </data>
 
@@ -23,8 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:setAdapter="@{radapter}"
-            app:refresh="@{viewmodel.refresh}"
-            />
+            app:refreshComplete="@{viewModel.refreshComplete.invoke().intValue()}"
+            app:refreshListener="@{viewModel.refresh}"
+            app:setAdapter="@{radapter}" />
     </RelativeLayout>
 </layout>
