@@ -7,9 +7,11 @@ import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter
 import com.stephen.jetpack.adapter.SampleAdapter
 
 
-@BindingAdapter(value = ["refreshListener"], requireAll = false)
-fun LRecyclerView.setRefreshListener(invoke: Function0<Any>) =
+@BindingAdapter("app:refreshListener")
+fun LRecyclerView.setRefreshListener(invoke: Function0<Any>) {
     this.setOnRefreshListener { invoke.invoke() }
+}
+
 
 /**
  * 先设置lRecyclerViewAdapter 再设置OnItemClick
