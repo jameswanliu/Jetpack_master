@@ -19,9 +19,8 @@ class ListDataSource<T>(
 ) : PageKeyedDataSource<Int, T>() {
     val networkState = MutableLiveData<NetworkStatus>()
     val initialLoad = MutableLiveData<NetworkStatus>()
+    val refreshComplete = MutableLiveData<Int>()
     val newDataArrive = SingleLiveEvent<Void>()
-
-
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, T>
@@ -33,6 +32,7 @@ class ListDataSource<T>(
             setRetry(null)//
             networkState.postValue(NetworkStatus.LOADED)
             initialLoad.postValue(NetworkStatus.LOADED)
+            refreshComplete.postValue(items.size)
             callback.onResult(items, null, 2)
             newDataArrive.postCall()
         }, { throwable ->

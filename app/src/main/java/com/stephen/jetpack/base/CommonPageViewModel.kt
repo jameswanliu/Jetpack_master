@@ -1,5 +1,6 @@
 package com.stephen.jetpack.base
 
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -29,6 +30,8 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
+    var pageSize = MutableLiveData<Int>()
+
     var pagedList: LiveData<PagedList<T>>
 
     private var listDataSourceFactory: ListDataSourceFactory<T>
@@ -39,7 +42,7 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
         .setPageSize(10)
         .setInitialLoadSizeHint(10)
         .setEnablePlaceholders(false)
-        .setPrefetchDistance(-1)
+        .setPrefetchDistance(2)
         .build()
 
 
@@ -48,12 +51,17 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
         pagedList = LivePagedListBuilder<Int, T>(listDataSourceFactory, config).build()
     }
 
+
     val refresh = {
         firstTime = false
-        listDataSourceFactory.listMutableList.value?.invalidate()
+        refresh()
     }
 
-    fun retry() = listDataSourceFactory.listMutableList.value?.retry()
+    private fun refresh(){
+        listDataSourceFactory.listMutableList.value!!.invalidate()
+    }
+
+    fun retry() = listDataSourceFactory.listMutableList.value!!.retry()
 
 
     fun loadEnd() {
@@ -64,6 +72,14 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
         }
     }
 
+    open fun onItemClick(view: View, position: Int) = Unit
+
+
+    val refreshComplete = {
+        Transformations.map(listDataSourceFactory.listMutableList.value!!.refreshComplete) {
+            it
+        }
+    }
 
     fun initNetError() {
         Transformations.switchMap(listDataSourceFactory.listMutableList) {
