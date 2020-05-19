@@ -21,6 +21,7 @@ class ListDataSource<T>(
     val initialLoad = MutableLiveData<NetworkStatus>()
     val refreshComplete = MutableLiveData<Int>()
     val newDataArrive = SingleLiveEvent<Void>()
+
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, T>

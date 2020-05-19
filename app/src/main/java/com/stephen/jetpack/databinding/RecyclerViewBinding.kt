@@ -2,14 +2,15 @@ package com.stephen.jetpack.databinding
 
 import android.view.View
 import androidx.databinding.BindingAdapter
+import com.github.jdsjlzx.interfaces.OnRefreshListener
 import com.github.jdsjlzx.recyclerview.LRecyclerView
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter
 import com.stephen.jetpack.adapter.SampleAdapter
 
 
 @BindingAdapter("app:refreshListener")
-fun LRecyclerView.setRefreshListener(invoke: Function0<Any>) {
-    this.setOnRefreshListener { invoke.invoke() }
+fun setRefreshListener(lRecyclerView: LRecyclerView,onRefreshListener: OnRefreshListener) {
+    lRecyclerView.setOnRefreshListener(onRefreshListener)
 }
 
 

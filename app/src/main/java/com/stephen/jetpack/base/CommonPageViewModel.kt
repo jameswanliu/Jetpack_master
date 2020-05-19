@@ -51,14 +51,11 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
         pagedList = LivePagedListBuilder<Int, T>(listDataSourceFactory, config).build()
     }
 
-    val refresh = {
+    fun refresh () {
         firstTime = false
-//        refresh()
-    }
-
-    private fun refresh() {
         listDataSourceFactory.listMutableList.value?.invalidate()
     }
+
 
     fun retry() = listDataSourceFactory.listMutableList.value!!.retry()
 

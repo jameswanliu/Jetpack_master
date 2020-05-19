@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:refreshComplete="@{viewModel.refreshComplete.invoke().intValue()}"
-            app:refreshListener="@{viewModel.refresh}"
+            app:refreshListener="@{()->viewModel.refresh()}"
             app:setAdapter="@{radapter}" />
     </RelativeLayout>
 </layout>
