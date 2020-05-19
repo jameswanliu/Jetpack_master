@@ -67,6 +67,11 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
         }
     }
 
+
+    fun loadMore(){
+
+    }
+
     open fun onItemClick(view: View, position: Int) = Unit
 
 

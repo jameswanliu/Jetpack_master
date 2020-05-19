@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="radapter"
             type="com.stephen.jetpack.adapter.SampleAdapter" />
+
         <variable
             name="viewModel"
             type="com.stephen.jetpack.ui.home.HomeViewModel" />
@@ -21,6 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:loadMoreListener="@{()->viewModel.loadMore()}"
+            app:loadmoreEnable="@{false}"
             app:refreshComplete="@{viewModel.refreshComplete.invoke().intValue()}"
             app:refreshListener="@{()->viewModel.refresh()}"
             app:setAdapter="@{radapter}" />
