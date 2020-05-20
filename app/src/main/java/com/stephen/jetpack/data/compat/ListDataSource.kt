@@ -19,7 +19,7 @@ class ListDataSource<T>(
 ) : PageKeyedDataSource<Int, T>() {
     val networkState = MutableLiveData<NetworkStatus>()
     val initialLoad = MutableLiveData<NetworkStatus>()
-    val refreshComplete = MutableLiveData<Int>()
+    val refreshComplete = MutableLiveData<Boolean>()
     val newDataArrive = SingleLiveEvent<Void>()
 
     override fun loadInitial(
@@ -33,8 +33,8 @@ class ListDataSource<T>(
             setRetry(null)//
             networkState.postValue(NetworkStatus.LOADED)
             initialLoad.postValue(NetworkStatus.LOADED)
-            refreshComplete.postValue(items.size)
-            callback.onResult(items, null, 2)
+            refreshComplete.postValue(items.size == 10)
+            callback.onResult(items, null, 1)
             newDataArrive.postCall()
         }, { throwable ->
             newDataArrive.postCall()
@@ -50,6 +50,7 @@ class ListDataSource<T>(
         compositeDisposable.add(remoteData.invoke(params.key).subscribe({ items ->
             setRetry(null)
             networkState.postValue(NetworkStatus.LOADED)
+            refreshComplete.postValue(items.size == 10)
             callback.onResult(items, params.key + 1)
             newDataArrive.postCall()
         }, { throwable ->
@@ -59,16 +60,16 @@ class ListDataSource<T>(
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, T>) {
-        networkState.postValue(NetworkStatus.LOADING)
-        compositeDisposable.add(remoteData.invoke(params.key).subscribe({ items ->
-            setRetry(null)
-            networkState.postValue(NetworkStatus.LOADED)
-            callback.onResult(items, params.key - 1)
-            newDataArrive.postCall()
-        }, { throwable ->
-            setRetry(Action { loadAfter(params, callback) })
-            networkState.postValue(NetworkStatus.error(throwable))
-        }))
+//        networkState.postValue(NetworkStatus.LOADING)
+//        compositeDisposable.add(remoteData.invoke(params.key).subscribe({ items ->
+//            setRetry(null)
+//            networkState.postValue(NetworkStatus.LOADED)
+//            callback.onResult(items, params.key - 1)
+//            newDataArrive.postCall()
+//        }, { throwable ->
+//            setRetry(Action { loadAfter(params, callback) })
+//            networkState.postValue(NetworkStatus.error(throwable))
+//        }))
     }
 
     private var retryCompletable: Completable? = null

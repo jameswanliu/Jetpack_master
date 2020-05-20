@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.github.jdsjlzx.interfaces.OnRefreshListener
 import com.stephen.common.ui.BaseViewModel
 import com.stephen.jetpack.adapter.CommonPageListAdapter
 import com.stephen.jetpack.data.compat.ListDataSourceFactory
@@ -39,8 +40,8 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
     private val refreshing = MutableLiveData<Boolean>()
 
     private val config = PagedList.Config.Builder()
-        .setPageSize(10)
-        .setInitialLoadSizeHint(10)
+        .setPageSize(20)
+        .setInitialLoadSizeHint(20)
         .setEnablePlaceholders(false)
         .setPrefetchDistance(2)
         .build()
@@ -51,7 +52,7 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
         pagedList = LivePagedListBuilder<Int, T>(listDataSourceFactory, config).build()
     }
 
-    fun refresh () {
+    open fun refresh() {
         firstTime = false
         listDataSourceFactory.listMutableList.value?.invalidate()
     }
@@ -68,7 +69,7 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
     }
 
 
-    fun loadMore(){
+    fun loadMore() {
 
     }
 
@@ -76,8 +77,8 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
 
 
     val refreshComplete = {
-        Transformations.map(listDataSourceFactory.listMutableList.value!!.refreshComplete) {
-            it
+        Transformations.switchMap(listDataSourceFactory.listMutableList){
+            it.refreshComplete
         }
     }
 

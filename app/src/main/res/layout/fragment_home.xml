@@ -11,7 +11,7 @@
             type="com.stephen.jetpack.adapter.SampleAdapter" />
 
         <variable
-            name="viewModel"
+            name="vm"
             type="com.stephen.jetpack.ui.home.HomeViewModel" />
     </data>
 
@@ -24,11 +24,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:loadMoreListener="@{()->viewModel.loadMore()}"
-            app:loadmoreEnable="@{false}"
-            app:refreshComplete="@{viewModel.refreshComplete.invoke().intValue()}"
-            app:refreshListener="@{()->viewModel.refresh()}"
+            app:refreshComplete="@{vm.refreshComplete.invoke().intValue()}"
+            app:loadMoredListener="@{vm.loadMore}"
+            app:refreshListener="@{vm.refresh}"
             app:setAdapter="@{radapter}" />
     </RelativeLayout>
 </layout>

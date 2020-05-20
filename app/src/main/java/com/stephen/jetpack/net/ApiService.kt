@@ -9,6 +9,6 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @GET("v2/data/category/Girl/type/Girl/page/1/count/{count}")
+    @GET("v2/data/category/Girl/type/Girl/page/{count}/count/10")
     fun getGirlsList(@Path("count") count: Int): Observable<BaseResp<List<GirlBean>>>
 }

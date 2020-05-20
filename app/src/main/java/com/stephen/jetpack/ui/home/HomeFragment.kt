@@ -12,22 +12,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     lateinit var homeViewModel: HomeViewModel
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     companion object {
-        fun newInstance(): HomeFragment {
-            return HomeFragment()
-        }
+        fun newInstance() = HomeFragment()
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_home
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_home
 
 
     override fun initData() {
-        homeViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         homeViewModel.onStart()
         mBinding.radapter = homeViewModel.adapter
+        mBinding.vm = homeViewModel
     }
 
 
