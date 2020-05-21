@@ -15,9 +15,9 @@ class SampleAdapter : CommonPageListAdapter
     companion object {
         val callback = object : DiffUtil.ItemCallback<GirlBean>() {
             override fun areItemsTheSame(oldItem: GirlBean, newItem: GirlBean): Boolean =
-                oldItem.id == newItem.id
+                oldItem._id == newItem._id
             override fun areContentsTheSame(oldItem: GirlBean, newItem: GirlBean): Boolean =
-                oldItem.id == newItem.id
+                oldItem._id == newItem._id
         }
     }
 

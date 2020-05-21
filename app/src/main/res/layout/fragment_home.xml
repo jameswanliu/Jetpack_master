@@ -24,8 +24,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:refreshComplete="@{vm.refreshComplete.invoke().intValue()}"
             app:loadMoredListener="@{vm.loadMore}"
+            app:refresh="@{vm.firstTime}"
+            app:refreshComplete="@{vm.refreshCompelete.intValue()}"
             app:refreshListener="@{vm.refresh}"
             app:setAdapter="@{radapter}" />
     </RelativeLayout>

@@ -19,8 +19,7 @@ class ListDataSource<T>(
 ) : PageKeyedDataSource<Int, T>() {
     val networkState = MutableLiveData<NetworkStatus>()
     val initialLoad = MutableLiveData<NetworkStatus>()
-    val refreshComplete = MutableLiveData<Boolean>()
-    val newDataArrive = SingleLiveEvent<Void>()
+    val refreshCompelete = MutableLiveData<Int>()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -28,16 +27,13 @@ class ListDataSource<T>(
     ) {
         networkState.postValue(NetworkStatus.LOADING)
         initialLoad.postValue(NetworkStatus.LOADING)
-        setRetry(null)
         compositeDisposable.add(remoteData.invoke(1).subscribe({ items ->
-            setRetry(null)//
+            setRetry(null)
             networkState.postValue(NetworkStatus.LOADED)
             initialLoad.postValue(NetworkStatus.LOADED)
-            refreshComplete.postValue(items.size == 10)
-            callback.onResult(items, null, 1)
-            newDataArrive.postCall()
+            callback.onResult(items, null, 1+1)
+            refreshCompelete.postValue(items.size)
         }, { throwable ->
-            newDataArrive.postCall()
             setRetry(Action { loadInitial(params, callback) })
             val error = NetworkStatus.error(throwable)
             networkState.postValue(error)
@@ -50,9 +46,7 @@ class ListDataSource<T>(
         compositeDisposable.add(remoteData.invoke(params.key).subscribe({ items ->
             setRetry(null)
             networkState.postValue(NetworkStatus.LOADED)
-            refreshComplete.postValue(items.size == 10)
             callback.onResult(items, params.key + 1)
-            newDataArrive.postCall()
         }, { throwable ->
             setRetry(Action { loadAfter(params, callback) })
             networkState.postValue(NetworkStatus.error(throwable))
@@ -61,21 +55,24 @@ class ListDataSource<T>(
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, T>) {
 //        networkState.postValue(NetworkStatus.LOADING)
-//        compositeDisposable.add(remoteData.invoke(params.key).subscribe({ items ->
-//            setRetry(null)
-//            networkState.postValue(NetworkStatus.LOADED)
-//            callback.onResult(items, params.key - 1)
-//            newDataArrive.postCall()
-//        }, { throwable ->
-//            setRetry(Action { loadAfter(params, callback) })
-//            networkState.postValue(NetworkStatus.error(throwable))
-//        }))
+//
+//        compositeDisposable.add(
+//            remoteData.invoke(params.key)
+//                .subscribe({
+//                    setRetry(null)
+//                    networkState.postValue(NetworkStatus.LOADED)
+//                    callback.onResult(it, params.key - 1)
+//                }, {
+//                    setRetry(Action { loadAfter(params, callback) })
+//                    networkState.postValue(NetworkStatus.error(it))
+//                })
+//        )
     }
 
     private var retryCompletable: Completable? = null
 
     fun retry() {
-        if (retryCompletable != null) {
+        retryCompletable?.let {
             compositeDisposable.add(
                 retryCompletable!!
                     .subscribe({ }, { logger.info("retry error =${it.message}") })

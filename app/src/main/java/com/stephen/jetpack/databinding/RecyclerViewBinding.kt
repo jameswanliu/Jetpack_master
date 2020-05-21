@@ -17,24 +17,16 @@ fun LRecyclerView.refreshListener(block: () -> Unit) {
 }
 
 
+@BindingAdapter("refresh")
+fun LRecyclerView.refresh(boolean: Boolean) {
+    if (boolean) refresh()
+}
+
+
 @BindingAdapter("loadMoredListener")
 fun LRecyclerView.loadMoredListener(block: () -> Unit) {
     setOnRefreshListener { block.invoke() }
 }
-
-
-/**
- * 先设置lRecyclerViewAdapter 再设置OnItemClick
- */
-@BindingAdapter("refreshComplete")
-fun LRecyclerView.refreshComplete(boolean: Boolean) {
-    if (adapter != null) {
-        if ((adapter as LRecyclerViewAdapter).innerAdapter != null) {
-            refreshComplete(10)
-        }
-    }
-}
-
 
 @BindingAdapter(value = ["setAdapter", "loadmoreEnable"], requireAll = false)
 fun setSampleAdapter(lRecyclerView: LRecyclerView, adapter: SampleAdapter, flag: Boolean) {
@@ -45,3 +37,14 @@ fun setSampleAdapter(lRecyclerView: LRecyclerView, adapter: SampleAdapter, flag:
         LinearLayoutManager(lRecyclerView.context, LinearLayoutManager.VERTICAL, false)
     lRecyclerView.setLoadMoreEnabled(flag)
 }
+
+
+@BindingAdapter("refreshComplete")
+fun LRecyclerView.refreshComplete(size:Int) {
+    if (adapter != null) {
+        if ((adapter as LRecyclerViewAdapter).innerAdapter != null) {
+            refreshComplete(size)
+        }
+    }
+}
+

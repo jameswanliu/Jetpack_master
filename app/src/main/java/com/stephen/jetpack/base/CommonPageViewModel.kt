@@ -25,25 +25,25 @@ import io.reactivex.disposables.CompositeDisposable
 
 abstract class CommonPageViewModel<T> : BaseViewModel() {
 
-    private var firstTime = true
+    var firstTime = MutableLiveData<Boolean>(true)
 
     abstract val adapter: CommonPageListAdapter<T, out ViewDataBinding>
 
     private val compositeDisposable = CompositeDisposable()
 
-    var pageSize = MutableLiveData<Int>()
+    private var pageSize = MutableLiveData<Int>()
 
-    var pagedList: LiveData<PagedList<T>>
+    private var pagedList: LiveData<PagedList<T>>
 
     private var listDataSourceFactory: ListDataSourceFactory<T>
 
     private val refreshing = MutableLiveData<Boolean>()
 
     private val config = PagedList.Config.Builder()
-        .setPageSize(20)
+        .setPageSize(10)
         .setInitialLoadSizeHint(20)
         .setEnablePlaceholders(false)
-        .setPrefetchDistance(2)
+        .setPrefetchDistance(1)
         .build()
 
 
@@ -53,7 +53,7 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
     }
 
     open fun refresh() {
-        firstTime = false
+        firstTime.postValue(false)
         listDataSourceFactory.listMutableList.value?.invalidate()
     }
 
@@ -73,19 +73,22 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
 
     }
 
+
+    /**
+     * 刷新完成
+     */
+   val refreshCompelete =
+        Transformations.switchMap(listDataSourceFactory.listMutableList) {
+            it.refreshCompelete
+        }
+
     open fun onItemClick(view: View, position: Int) = Unit
 
-
-    val refreshComplete = {
-        Transformations.switchMap(listDataSourceFactory.listMutableList){
-            it.refreshComplete
-        }
-    }
 
     fun initNetError() {
         Transformations.switchMap(listDataSourceFactory.listMutableList) {
             Transformations.map(it.initialLoad) {
-                it.status == Status.FAILED && it.throwable != null && it.throwable.netError() && firstTime
+                it.status == Status.FAILED && it.throwable != null && it.throwable.netError() && firstTime.value!!
             }
         }
     }
@@ -93,16 +96,11 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
     fun netState() =
         Transformations.switchMap(listDataSourceFactory.listMutableList) { it.networkState }
 
-    val loadMore = {
-        pagedList.apply {
-            value?.loadAround(this.value?.size!!)
-        }
-    }
 
     val loading: LiveData<Boolean> =
         Transformations.switchMap(listDataSourceFactory.listMutableList) {
             Transformations.map(it.initialLoad) {
-                it.status == Status.LOADING && firstTime
+                it.status == Status.LOADING && firstTime.value!!
             }
         }
 

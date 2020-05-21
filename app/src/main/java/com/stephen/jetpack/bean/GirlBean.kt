@@ -9,7 +9,7 @@ import java.io.Serializable
 
 
 data class GirlBean(
-    val id: String,
+    val _id: String,
     val author: String,
     val category: String,
     val createdAt: String,
