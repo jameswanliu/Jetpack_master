@@ -1,5 +1,6 @@
 package com.stephen.jetpack.data.remote
 
+import androidx.lifecycle.LiveData
 import com.stephen.common.bean.BaseResp
 import com.stephen.jetpack.bean.GirlBean
 import com.stephen.jetpack.data.repository.GirlRepository
@@ -16,6 +17,6 @@ import javax.inject.Singleton
 
 @Singleton
 class GirlRemoteDataSource @Inject constructor(private val apiService: ApiService) : GirlRepository {
-    override fun getGirlDataList(position: Int): Observable<BaseResp<List<GirlBean>>> =
+    override fun getGirlDataList(position: Int): LiveData<BaseResp<List<GirlBean>>> =
         apiService.getGirlsList(position)
 }

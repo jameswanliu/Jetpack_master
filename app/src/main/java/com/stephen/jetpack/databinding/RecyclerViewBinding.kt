@@ -1,50 +1,65 @@
 package com.stephen.jetpack.databinding
 
-import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.jdsjlzx.interfaces.OnLoadMoreListener
-import com.github.jdsjlzx.interfaces.OnRefreshListener
-import com.github.jdsjlzx.recyclerview.LRecyclerView
-import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.stephen.jetpack.adapter.SampleAdapter
 
 
-@BindingAdapter("refreshListener")
-fun LRecyclerView.refreshListener(block: () -> Unit) {
-    setOnRefreshListener { block.invoke() }
+@BindingAdapter(
+    value = ["refreshing", "moreLoading", "hasMore"],
+    requireAll = false
+)
+fun bindSmartRefreshLayout(
+    smartLayout: SmartRefreshLayout,
+    refreshing: Boolean,
+    moreLoading: Boolean,
+    hasMore: Boolean
+
+) {
+    if (!refreshing) smartLayout.finishRefresh()
+    if (!moreLoading) smartLayout.finishLoadMore()
+    smartLayout.setNoMoreData(!hasMore)
 }
 
 
-@BindingAdapter("refresh")
-fun LRecyclerView.refresh(boolean: Boolean) {
-    if (boolean) refresh()
+@BindingAdapter(
+    value = ["onRefreshListener", "onLoadMoreListener"],
+    requireAll = false
+)
+fun bindListener(
+    smartLayout: SmartRefreshLayout,
+    refreshListener: OnRefreshListener?,
+    loadMoreListener: OnLoadMoreListener?
+) {
+    smartLayout.setOnRefreshListener(refreshListener)
+    smartLayout.setOnLoadMoreListener(loadMoreListener)
 }
 
 
-@BindingAdapter("loadMoredListener")
-fun LRecyclerView.loadMoredListener(block: () -> Unit) {
-    setOnRefreshListener { block.invoke() }
-}
 
-@BindingAdapter(value = ["setAdapter", "loadmoreEnable"], requireAll = false)
-fun setSampleAdapter(lRecyclerView: LRecyclerView, adapter: SampleAdapter, flag: Boolean) {
-    val lRecyclerViewAdapter = LRecyclerViewAdapter(adapter)
-    lRecyclerView.adapter = lRecyclerViewAdapter
-    lRecyclerView.itemAnimator = DefaultItemAnimator()
-    lRecyclerView.layoutManager =
-        LinearLayoutManager(lRecyclerView.context, LinearLayoutManager.VERTICAL, false)
-    lRecyclerView.setLoadMoreEnabled(flag)
+@BindingAdapter(
+    value = ["autoRefresh"]
+)
+fun bindSmartRefreshLayout(
+    smartLayout: SmartRefreshLayout,
+    autoRefresh: Boolean
+) {
+    if (autoRefresh) smartLayout.autoRefresh()
 }
 
 
-@BindingAdapter("refreshComplete")
-fun LRecyclerView.refreshComplete(size:Int) {
-    if (adapter != null) {
-        if ((adapter as LRecyclerViewAdapter).innerAdapter != null) {
-            refreshComplete(size)
-        }
-    }
+@BindingAdapter(value = ["setAdapter"], requireAll = false)
+fun setSampleAdapter(recyclerView: RecyclerView, adapter: SampleAdapter) {
+    recyclerView.itemAnimator = DefaultItemAnimator()
+    recyclerView.layoutManager =
+        LinearLayoutManager(recyclerView.context, LinearLayoutManager.VERTICAL, false)
+    recyclerView.adapter = adapter
 }
+
+
 

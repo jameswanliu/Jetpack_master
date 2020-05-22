@@ -1,5 +1,6 @@
 package com.stephen.jetpack.data.repository
 
+import androidx.lifecycle.LiveData
 import com.stephen.common.bean.BaseResp
 import com.stephen.jetpack.bean.GirlBean
 import com.stephen.jetpack.di.qualifier.RemoteData
@@ -14,11 +15,11 @@ import javax.inject.Singleton
 
 
 interface GirlRepository {
-    fun getGirlDataList(position: Int):  Observable<BaseResp<List<GirlBean>>>
+    fun getGirlDataList(position: Int):  LiveData<BaseResp<List<GirlBean>>>
 }
 
 @Singleton
 class GirlRepositoryImpl @Inject constructor(@RemoteData private val girlRemoteDataSource: GirlRepository) : GirlRepository {
-    override fun getGirlDataList(position: Int):  Observable<BaseResp<List<GirlBean>>>  =
+    override fun getGirlDataList(position: Int):  LiveData<BaseResp<List<GirlBean>>>  =
         girlRemoteDataSource.getGirlDataList(position)
 }

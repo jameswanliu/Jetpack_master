@@ -53,7 +53,7 @@ class NetworkModule {
         .baseUrl(DATA_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJavaCallAdapterFactory2.create(Schedulers.io(),AndroidSchedulers.mainThread()))
+        .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
         .build()
         .create(ApiService::class.java)
 }

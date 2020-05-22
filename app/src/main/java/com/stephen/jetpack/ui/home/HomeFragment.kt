@@ -1,5 +1,6 @@
 package com.stephen.jetpack.ui.home
 
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.stephen.common.ui.BaseFragment
@@ -9,7 +10,7 @@ import javax.inject.Inject
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
-    lateinit var homeViewModel: HomeViewModel
+    private lateinit var homeViewModel: HomeViewModel
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -25,6 +26,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         homeViewModel.onStart()
         mBinding.radapter = homeViewModel.adapter
         mBinding.vm = homeViewModel
+        homeViewModel.dataObserver.observe(this, Observer {
+            homeViewModel.addData(it)
+        })
     }
 
 

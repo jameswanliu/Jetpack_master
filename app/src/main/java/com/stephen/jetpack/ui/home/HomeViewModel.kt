@@ -1,6 +1,8 @@
 package com.stephen.jetpack.ui.home
 
 import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.stephen.common.log.logger
 import com.stephen.common.rx.convert
 import com.stephen.jetpack.adapter.SampleAdapter
@@ -14,6 +16,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val girlRepository: GirlRepository) :
     CommonPageViewModel<GirlBean>() {
     override val adapter = SampleAdapter()
-    override fun getDataList(position: Int): Observable<List<GirlBean>> =  girlRepository.getGirlDataList(position).convert()
-    override fun onItemClick(view: View, position: Int) = logger.info("onItemClick = $position")
+    override fun onItemClick(view: View, position: Int) = Unit
+    val dataObserver =
+        getDataList(Transformations.switchMap(page) { girlRepository.getGirlDataList(it) })
 }

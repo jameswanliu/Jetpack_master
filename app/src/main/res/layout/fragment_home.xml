@@ -15,19 +15,33 @@
             type="com.stephen.jetpack.ui.home.HomeViewModel" />
     </data>
 
-    <RelativeLayout
-        android:id="@+id/rootView"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:onRefreshListener="@{()->vm.refresh()}"
+        app:refreshing="@{vm.refreshing}"
+        app:moreLoading="@{vm.moreLoading}"
+        app:hasMore="@{vm.hasMore}"
+        app:autoRefresh="@{vm.autoRefresh}"
+        app:onLoadMoreListener="@{()->vm.loadMore()}">
 
-        <com.github.jdsjlzx.recyclerview.LRecyclerView
+
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srlAccentColor="@color/text_color" />
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:loadMoredListener="@{vm.loadMore}"
-            app:refresh="@{vm.firstTime}"
-            app:refreshComplete="@{vm.refreshCompelete.intValue()}"
-            app:refreshListener="@{vm.refresh}"
-            app:setAdapter="@{radapter}" />
-    </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:setAdapter="@{vm.adapter}" />
+
+        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srlAccentColor="@color/text_color" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </layout>

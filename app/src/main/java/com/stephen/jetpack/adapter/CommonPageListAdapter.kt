@@ -13,10 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
  * on 2020/5/4
  */
 abstract class CommonPageListAdapter<T, D : ViewDataBinding> constructor(
-    private val resid: Int,
-    callback: DiffUtil.ItemCallback<T>
-) : PagedListAdapter<T,
-        CommonPageListAdapter.CommonViewHolder>(callback) {
+    private val resid: Int
+) : RecyclerView.Adapter<CommonPageListAdapter.CommonViewHolder>() {
+    val data = ArrayList<T>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonViewHolder {
         val d: D = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),

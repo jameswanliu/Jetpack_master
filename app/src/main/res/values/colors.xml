@@ -49,4 +49,5 @@
     <color name="up_color">#2992E4</color>
     <color name="fail_color">#FD5967</color>
     <color name="wait_color">#213E58</color>
+    <color name="text_color">#969696</color>
 </resources>
