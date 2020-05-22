@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(private val girlRepository: GirlRepository) :
     CommonPageViewModel<GirlBean>() {
-    override val adapter = SampleAdapter()
     override fun onItemClick(view: View, position: Int) = Unit
+    override val adapter = SampleAdapter()
     val dataObserver =
         getDataList(Transformations.switchMap(page) { girlRepository.getGirlDataList(it) })
 }

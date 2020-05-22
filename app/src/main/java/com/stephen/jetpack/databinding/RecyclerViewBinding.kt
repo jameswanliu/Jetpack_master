@@ -14,18 +14,26 @@ import com.stephen.jetpack.adapter.SampleAdapter
     value = ["refreshing", "moreLoading", "hasMore"],
     requireAll = false
 )
-fun bindSmartRefreshLayout(
-    smartLayout: SmartRefreshLayout,
+fun SmartRefreshLayout.bindSmartRefreshLayout(
     refreshing: Boolean,
     moreLoading: Boolean,
     hasMore: Boolean
 
 ) {
-    if (!refreshing) smartLayout.finishRefresh()
-    if (!moreLoading) smartLayout.finishLoadMore()
-    smartLayout.setNoMoreData(!hasMore)
+    if (!refreshing) finishRefresh()
+    if (!moreLoading) finishLoadMore()
+    setNoMoreData(!hasMore)
 }
 
+@BindingAdapter(
+    value = ["autoRefresh"]
+)
+fun bindSmartRefreshLayout(
+    smartLayout: SmartRefreshLayout,
+    autoRefresh: Boolean
+) {
+    if (autoRefresh) smartLayout.autoRefresh()
+}
 
 @BindingAdapter(
     value = ["onRefreshListener", "onLoadMoreListener"],
@@ -38,18 +46,6 @@ fun bindListener(
 ) {
     smartLayout.setOnRefreshListener(refreshListener)
     smartLayout.setOnLoadMoreListener(loadMoreListener)
-}
-
-
-
-@BindingAdapter(
-    value = ["autoRefresh"]
-)
-fun bindSmartRefreshLayout(
-    smartLayout: SmartRefreshLayout,
-    autoRefresh: Boolean
-) {
-    if (autoRefresh) smartLayout.autoRefresh()
 }
 
 

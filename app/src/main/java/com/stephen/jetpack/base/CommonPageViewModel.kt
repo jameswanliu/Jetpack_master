@@ -1,23 +1,15 @@
 package com.stephen.jetpack.base
 
-import android.text.TextUtils
 import android.view.View
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableInt
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import com.github.jdsjlzx.interfaces.OnRefreshListener
 import com.stephen.common.bean.BaseResp
 import com.stephen.common.ui.BaseViewModel
 import com.stephen.jetpack.adapter.CommonPageListAdapter
-import com.stephen.jetpack.data.compat.ListDataSourceFactory
-import com.stephen.jetpack.net.status.Status
-import com.stephen.jetpack.utils.netError
-import com.stephen.jetpack.utils.noData
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 
 /**
  * create by stephen
@@ -26,34 +18,31 @@ import io.reactivex.disposables.CompositeDisposable
 
 
 abstract class CommonPageViewModel<T> : BaseViewModel() {
-
-    val refreshTrigger = MutableLiveData<Boolean>()
+    val refreshTrigger = ObservableBoolean()
     val loading = MutableLiveData<Boolean>()
-
-    protected val page = MutableLiveData<Int>()
-    val refreshing = MutableLiveData<Boolean>()
-    val moreLoading = MutableLiveData<Boolean>()
-    val hasMore = MutableLiveData<Boolean>()
-    val autoRefresh = MutableLiveData<Boolean>()
+    val page = MutableLiveData<Int>()
+    val refreshing = ObservableBoolean()
+    val moreLoading = ObservableBoolean()
+    val hasMore = ObservableBoolean()
+    val autoRefresh = ObservableBoolean()
     abstract val adapter: CommonPageListAdapter<T, out ViewDataBinding>
 
-
     fun loadMore() {
-        page.value = (page.value ?: 1) + 1
-        moreLoading.value = true
+        page.value = (page.value?:1)+1
+        moreLoading.set(true)
     }
 
-    private fun autoRefresh() {
-        autoRefresh.value = true
+    fun autoRefresh() {
+        autoRefresh.set(true)
     }
 
     fun refresh() {
+        refreshing.set(true)
         page.value = 1
-        refreshing.value = true
     }
 
     fun loadData() {
-        refreshTrigger.value = true
+        refreshTrigger.set(true)
         loading.value = true
     }
 
@@ -63,24 +52,21 @@ abstract class CommonPageViewModel<T> : BaseViewModel() {
         }
     }
 
-
-    fun addData(data: List<T>) {
-        adapter.data.addAll(data)
-        adapter.notifyDataSetChanged()
+    fun addData(data: List<T>, isFirst: Boolean) {
+        adapter.addData(data, isFirst)
     }
 
     open fun onItemClick(view: View, position: Int) = Unit
 
-    override fun onStart() =   autoRefresh()
-
+    override fun onStart() = Unit
 
     override fun onStop() = Unit
 
-
     open fun getDataList(source: LiveData<BaseResp<List<T>>>): LiveData<List<T>> {
-        refreshing.postValue(false)
-        moreLoading.postValue(false)
         return Transformations.map(source) {
+            refreshing.set(false)
+            moreLoading.set(false)
+            hasMore.set(it?.data?.size !in 0 until 10)
             it.data
         }
     }

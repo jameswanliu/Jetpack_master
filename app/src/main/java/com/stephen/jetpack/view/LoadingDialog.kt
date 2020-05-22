@@ -3,8 +3,8 @@ package com.stephen.jetpack.view
 import android.content.Context
 import android.view.Gravity
 import androidx.appcompat.app.AppCompatDialog
-import com.github.jdsjlzx.progressindicator.AVLoadingIndicatorView
 import com.stephen.jetpack.R
+import com.wang.avi.AVLoadingIndicatorView
 
 /**
  * create by stephen

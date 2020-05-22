@@ -9,7 +9,6 @@ import com.stephen.jetpack.databinding.FragmentHomeBinding
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-
     private lateinit var homeViewModel: HomeViewModel
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -23,17 +22,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun initData() {
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
-        homeViewModel.onStart()
-        mBinding.radapter = homeViewModel.adapter
         mBinding.vm = homeViewModel
+        mBinding.executePendingBindings()
+        mBinding.radapter = homeViewModel.adapter
+        homeViewModel.autoRefresh()
         homeViewModel.dataObserver.observe(this, Observer {
-            homeViewModel.addData(it)
+            homeViewModel.addData(it, homeViewModel.page.value == 1)
         })
-    }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        homeViewModel.onStop()
     }
 }

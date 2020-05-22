@@ -32,6 +32,13 @@ abstract class CommonPageListAdapter<T, D : ViewDataBinding> constructor(
     }
 
 
+    fun addData(d:List<T>,isFirst:Boolean){
+        if(isFirst)data.clear()
+        data.addAll(d)
+        notifyDataSetChanged()
+    }
+
+
     abstract fun onBind(mBinding: D, position: Int)
     class CommonViewHolder(viewBinding: ViewDataBinding) :
         RecyclerView.ViewHolder(viewBinding.root)

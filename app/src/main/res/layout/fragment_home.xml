@@ -19,12 +19,12 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:onRefreshListener="@{()->vm.refresh()}"
-        app:refreshing="@{vm.refreshing}"
-        app:moreLoading="@{vm.moreLoading}"
-        app:hasMore="@{vm.hasMore}"
         app:autoRefresh="@{vm.autoRefresh}"
-        app:onLoadMoreListener="@{()->vm.loadMore()}">
+        app:hasMore="@{vm.hasMore}"
+        app:moreLoading="@{vm.moreLoading}"
+        app:onLoadMoreListener="@{()->vm.loadMore()}"
+        app:onRefreshListener="@{()->vm.refresh()}"
+        app:refreshing="@{vm.refreshing}">
 
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:overScrollMode="never"
             app:setAdapter="@{vm.adapter}" />
 
         <com.scwang.smartrefresh.layout.footer.ClassicsFooter
