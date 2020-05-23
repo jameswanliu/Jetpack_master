@@ -54,19 +54,6 @@ class ListDataSource<T>(
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, T>) {
-//        networkState.postValue(NetworkStatus.LOADING)
-//
-//        compositeDisposable.add(
-//            remoteData.invoke(params.key)
-//                .subscribe({
-//                    setRetry(null)
-//                    networkState.postValue(NetworkStatus.LOADED)
-//                    callback.onResult(it, params.key - 1)
-//                }, {
-//                    setRetry(Action { loadAfter(params, callback) })
-//                    networkState.postValue(NetworkStatus.error(it))
-//                })
-//        )
     }
 
     private var retryCompletable: Completable? = null

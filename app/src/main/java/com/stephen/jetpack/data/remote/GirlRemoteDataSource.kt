@@ -5,7 +5,6 @@ import com.stephen.common.bean.BaseResp
 import com.stephen.jetpack.bean.GirlBean
 import com.stephen.jetpack.data.repository.GirlRepository
 import com.stephen.jetpack.net.ApiService
-import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 

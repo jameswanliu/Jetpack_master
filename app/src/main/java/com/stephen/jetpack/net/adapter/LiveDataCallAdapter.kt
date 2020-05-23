@@ -18,9 +18,9 @@ import java.util.concurrent.atomic.AtomicBoolean
 class LiveDataCallAdapter<T> (private val responseType:Type) :CallAdapter<T,LiveData<T>>{
     override fun adapt(call: Call<T>): LiveData<T> {
         return object :LiveData<T>(){
+            private val started = AtomicBoolean(false)
             override fun onActive() {
                 super.onActive()
-                val started = AtomicBoolean(false)
                 if (started.compareAndSet(false, true)) {//确保执行一次
                     call.enqueue(object : Callback<T> {
                         override fun onFailure(call: Call<T>, t: Throwable) {
